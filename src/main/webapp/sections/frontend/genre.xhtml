@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition>
+        <div class="content_left_section">
+            <h1>#{msgs.pageGenres}</h1>
+            <h:form>
+                <ul>
+                    <ui:repeat value="#{eBookActionBean.genre}" var="genres">
+                        <li>                   
+                            <!-- pass value to bean directly by commandLink
+                            <h:commandLink action="category" value="#{genres.name}">
+                                <f:setPropertyActionListener target="#{genreBean.genreID}" value="#{genres.genreID}"/>
+                                <f:setPropertyActionListener target="#{genreBean.name}" value="#{genres.name}"/>
+                            </h:commandLink>-->
+
+                            <!-- pass value by url parameter-->
+                            <h:link value="#{genres.name}" outcome="category" >
+                                <f:param name="genreID" value="#{genres.genreID}" />
+                                <f:param name="genre" value="#{genres.name}" />
+                            </h:link>
+                        </li>
+                    </ui:repeat>
+                </ul>
+            </h:form>
+        </div>
+    </ui:composition>
+
+</html>

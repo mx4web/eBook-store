@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/templates/masterLayout.xhtml">
+
+        <ui:define name="windowTitle">
+            #{msgs.pageTitle} - #{msgs.cart}
+        </ui:define>
+
+        <ui:define name="maincontent">
+            <div class="shoppingcart">
+                <h1>#{msgs.cart}</h1>
+                <h:outputText value="#{msgs.cartNoProduct}" rendered="#{cartBean.cartDetails.size() == 0}"/>
+                <h:form rendered="#{cartBean.total > 0}">
+                    <h:dataTable value="#{cartBean.cartDetails}" var="cartDetail" class="cartdetails" headerClass="header" columnClasses="cartColumn">
+                        <h:column>
+                            <f:facet name="header">#{msgs.cartTitle}</f:facet>
+                                #{cartDetail.title.length() gt 70 ? cartDetail.title.substring(0,70).concat('...'):cartDetail.title}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">#{msgs.cartPrice}</f:facet>
+                            <h:outputText value="#{cartDetail.price}"><f:convertNumber type="currency"/></h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header"></f:facet>
+                            <h:commandLink value="Delete" action="#{cartActionBean.removeCart(cartDetail)}"/>
+                        </h:column>
+                    </h:dataTable>
+                    <h:panelGrid columns="2" class="cartsummary" >
+                        #{msgs.cartDiscount}
+                        <h:outputText value="#{cartBean.discount}"><f:convertNumber type="currency"/></h:outputText>
+                        <h:outputText value="#{msgs.cartSubtotal}"/>
+                        <h:outputText value="#{cartBean.subtotal}"><f:convertNumber type="currency"/></h:outputText>
+                        <h:outputText value="#{msgs.cartGst}"/>
+                        <h:outputText value="#{cartBean.gst}"><f:convertNumber type="currency"/></h:outputText>
+                        <h:outputText value="#{msgs.cartTotal}" class="total"/> 
+                        <h:outputText value="#{cartBean.total}" class="total"><f:convertNumber type="currency"/></h:outputText>
+                    </h:panelGrid>
+
+                    <div class="cleaner_with_height">&nbsp;</div>
+
+                    <div class="action_button">
+                        <h:commandLink value="#{msgs.cartCheckout}" action="checkout">
+                            <f:setPropertyActionListener target="#{clientBean.referencePage}" value="checkout"/>
+                        </h:commandLink>
+                    </div>
+
+                </h:form>
+            </div>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

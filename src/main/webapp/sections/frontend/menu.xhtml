@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition>
+        <ul>
+            <li>
+                <h:form rendered="#{!clientBean.loggedInAsAdmin}" class="home">
+                    <h:commandLink value="#{msgs.pageHome}" action="index?faces-redirect=true" class="home">
+                        <f:setPropertyActionListener target="#{genreBean.genreID}" value="0"/>
+                        <f:setPropertyActionListener target="#{genreBean.name}" value=""/>
+                    </h:commandLink>
+                </h:form>
+            </li>
+            <li>
+                <h:form>
+                    <h:commandLink rendered ="#{!clientBean.isLoggedIn()}" value="#{msgs.menuLogin}" action="login">
+                        <f:setPropertyActionListener target="#{clientBean.referencePage}" value="orderHistory"/>
+                    </h:commandLink>
+                </h:form>
+            </li>
+            <li><h:link rendered ="#{clientBean.isLoggedIn()}" value="#{msgs.menuMyaccount}" outcome="registrationForm" /></li>
+
+            <li>
+                <h:form>
+                    <h:commandLink rendered ="#{clientBean.isLoggedIn()}" value="#{msgs.menuLogout}" action="#{clientBean.logout()}"/>
+                </h:form>
+            </li>
+            <ui:fragment rendered="#{!clientBean.loggedInAsAdmin}">
+                <li>
+                    <h:form id="menuCartForm">
+                        <h:commandLink id="cartQty" value="#{msgs.menuShoppingcart} (#{cartBean.cartDetails.size()})" action="shoppingcart?faces-redirect=true"/>
+                    </h:form>
+                </li>
+            </ui:fragment>
+            <li>
+                <h:form>
+                    <h:selectOneMenu value="#{siteActionBean.language}" onchange="submit()">
+                        <f:selectItem itemValue="en" itemLabel="#{msgs.menuLanguageEnglish}" />
+                        <f:selectItem itemValue="fr" itemLabel="#{msgs.menuLanguageFrench}" />
+                    </h:selectOneMenu>
+                </h:form>
+            </li>
+        </ul>
+        <div id="shoppingBagWindow" style="display:none; left: 538px;">
+            <h:form id="menuCartPopup">
+                <h:outputText value="#{msgs.cartNoProduct}" rendered="#{cartBean.cartDetails.size() == 0}"/>
+                <ui:fragment rendered="#{cartBean.total > 0}">
+                    <h:dataTable value="#{cartBean.cartDetails}" var="cartDetail" class="cartdetails" headerClass="header" columnClasses="cartColumn">
+                        <h:column>
+                            <f:facet name="header">#{msgs.cartTitle}</f:facet>
+                                #{cartDetail.title.length() gt 45 ? cartDetail.title.substring(0,45).concat('...'):cartDetail.title}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">#{msgs.cartPrice}</f:facet>
+                            <h:outputText value="#{cartDetail.price}"><f:convertNumber type="currency"/></h:outputText>
+                        </h:column>
+                    </h:dataTable>
+                    <div class="button">
+                        <div class="continue_button">
+                            <button id="continueShopping">#{msgs.cartContinueShopping}</button>
+                        </div>
+                        <div class="action_button">
+                            <h:commandLink value="#{msgs.cartCheckout}" action="shoppingcart"/>
+                        </div>
+                    </div>
+                </ui:fragment>
+            </h:form>
+        </div>
+    </ui:composition>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <f:metadata>
+        <f:event listener="#{siteActionBean.isLoggedInAsAdmin}" type="preRenderView" />
+        <f:viewParam name="status" value="#{searchReviewBean.reviewStatus}"/>
+    </f:metadata>
+    
+    <body>
+        <ui:composition template="/templates/masterLayout.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.headTitle} - #{msgs.adminReviewManagement}
+            </ui:define>
+
+            <ui:define name="content_left">
+                <ui:include src="/sections/frontend/myaccountleftmenu.xhtml"/>
+            </ui:define>
+
+            <ui:define name="maincontent">
+                <h1>#{msgs.adminReviewManagement}</h1>
+                <h:form>
+                    <h:panelGrid columns="2">
+                        <h:outputText value="#{msgs.searchBookGenre}"></h:outputText>
+                        <h:selectOneMenu value="#{searchReviewBean.genre}">
+                            <f:selectItem itemLabel="all" itemValue="0" />
+                            <f:selectItems value="#{eBookActionBean.genre}" var="genre" itemLabel="#{genre.name}" itemValue="#{genre.genreID}" />
+                        </h:selectOneMenu>
+
+                        <h:outputText value="#{msgs.searchBookTitle}"></h:outputText>
+                        <h:inputText value="#{searchReviewBean.title}"></h:inputText>
+                        <h:outputText value="#{msgs.searchReviewStatus}"></h:outputText>
+                        <h:selectOneMenu value="#{searchReviewBean.reviewStatus}">
+                            <f:selectItem itemLabel="all" itemValue="all" />
+                            <f:selectItem itemLabel="approved" itemValue="approved" />
+                            <f:selectItem itemLabel="unapproved" itemValue="unapproved" />
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <h:commandButton value="#{msgs.searchBook}" action="reviewManagement"></h:commandButton>
+                </h:form>
+
+                <div class="cleaner_with_height">&nbsp;</div>
+                <h2>#{msgs.pageSearchResult}</h2>
+                <h:outputText rendered="#{reviewActionBean.searchReviews().size() == 0}">#{msgs.searchNoResult}</h:outputText>
+                <h:form>
+                    <ui:repeat value="#{reviewActionBean.searchReviews()}" var="review">
+                        <div class="reviews">
+                            #{review[6]}<br/>
+                            #{review[0]} #{review[1]} • 
+                            <h:outputText value="#{review[2]}" class="date"><f:convertDateTime type="date" dateStyle="long"/></h:outputText>
+                            <br/>
+                            <div class="rateit" data-rateit-value="#{review[3]}" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+                            <br/>
+                            <h:outputText value="#{review[4]}" /><br/>
+
+
+                            <h:commandLink value="Unapprove" action="#{reviewActionBean.updateReviews(review[7],0)}" rendered="#{review[5] == 1}" class="reviewaction"/>
+                            <h:commandLink value="Approve" action="#{reviewActionBean.updateReviews(review[7],1)}" rendered="#{review[5] == 0}" class="reviewaction"/>
+                            <h:commandLink value="Delete" action="#{reviewActionBean.deleteReviews(review[7])}" class="reviewaction"/>
+                        </div>
+                        <hr class="reviewhr"/>
+                        <div class="cleaner_with_height">&nbsp;</div>
+                    </ui:repeat>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

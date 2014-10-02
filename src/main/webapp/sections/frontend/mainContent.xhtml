@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ebook="http://ebook.com/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition>
+        <h1>#{msgs.pageBookSpecialsOfTheDay}</h1>
+        <ui:repeat value="#{eBookActionBean.specialBooks}" var="book" size="2">
+            <div class="special_product_box">
+                <div class="product_info">
+                    <div class="image_panel">
+                        <h:link outcome="bookDetails" >
+                            <h:graphicImage library="images" name="books/#{book[1]}_s.jpg" />
+                            <f:param name="bookID" value="#{book[0]}" />
+                        </h:link>
+                    </div>
+                    <h:link value="#{book[2].length() gt 45 ? book[2].substring(0,45).concat('...'):book[2]}" outcome="bookDetails" >
+                        <f:param name="bookID" value="#{book[0]}" />
+                    </h:link>
+                    <p/>
+                    <ul>
+                        <li>List Price: <h:outputText value="#{book[3]}" class="listprice"><f:convertNumber type="currency"/></h:outputText></li>
+                        <li>Price: <h:outputText value="#{book[4]}"><f:convertNumber type="currency"/></h:outputText></li>
+                        <li>You save <h:outputText value="#{1- (book[4] / book[3])}" class="save"><f:convertNumber type="percent"/></h:outputText></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="cleaner_with_width">&nbsp;</div>
+        </ui:repeat>
+        <div class="cleaner_with_height">&nbsp;</div>
+
+        <ui:fragment rendered="#{eBookActionBean.lastViewedBooks != null}">
+            <h1>#{msgs.pageRecommendBooks}</h1>
+            <ui:repeat value="#{eBookActionBean.recommendBooks}" var="book">
+                <ebook:book book="#{book}"></ebook:book>
+                <div class="cleaner_with_height">&nbsp;</div>
+            </ui:repeat>
+        </ui:fragment>
+        <ui:fragment rendered="#{eBookActionBean.lastViewedBooks == null}">
+            <h1>#{msgs.pageRecentBooks}</h1>
+            <ui:repeat value="#{eBookActionBean.recentBooks}" var="book" size="#{eBookActionBean.recentBooks.size() > 3? 3:eBookActionBean.recentBooks.size()}">
+                <ebook:book book="#{book}"></ebook:book>
+                <div class="cleaner_with_height">&nbsp;</div>
+            </ui:repeat>
+        </ui:fragment>
+    </ui:composition>
+</html>

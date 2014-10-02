@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ebook="http://ebook.com/facelets">
+
+    <ui:composition template="/templates/masterLayout.xhtml">
+        <ui:define name="windowTitle">
+            #{msgs.pageTitle} - #{msgs.pageRecentBooks}
+        </ui:define>
+
+        <ui:define name="maincontent">
+            <h1>#{msgs.pageRecentBooks}</h1>
+            <ui:repeat value="#{eBookActionBean.recentBooks}" var="book">
+                <ebook:book book="#{book}"></ebook:book>
+                <div class="cleaner_with_height">&nbsp;</div>
+            </ui:repeat>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

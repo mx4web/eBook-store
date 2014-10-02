@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ebook="http://ebook.com/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:viewParam name="genreID" value="#{genreBean.genreID}"/>
+        <f:viewParam name="genre" value="#{genreBean.name}"/>        
+    </f:metadata>
+
+    <ui:composition template="/templates/masterLayout.xhtml">
+        <ui:define name="windowTitle">
+            #{msgs.pageTitle} - #{genreBean.name}
+        </ui:define>
+
+        <ui:define name="maincontent">
+            <h1>#{msgs.pageBestSellers} of #{genreBean.name}</h1>
+            <ui:repeat value="#{eBookActionBean.topSellers}" var="book">
+                <ebook:book books="#{book}"></ebook:book>
+                <div class="cleaner_with_height">&nbsp;</div>
+            </ui:repeat>
+
+            <div class="cleaner_with_height">&nbsp;</div>
+
+            <h1>#{msgs.pageAllOtherBooks} of #{genreBean.name}</h1>
+            <ui:repeat value="#{eBookActionBean.booksByGenreID}" var="book">
+                <ebook:book book="#{book}"></ebook:book>
+                <div class="cleaner_with_height">&nbsp;</div>
+            </ui:repeat>
+
+            <div class="cleaner_with_height">&nbsp;</div>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>#{msgs.headTitle}</title>
+    </head>
+    <body>
+        <ui:composition template="/templates/masterLayout.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.clientFormTitle}
+            </ui:define>
+
+            <ui:define name="content_left">
+                <ui:include src="/sections/frontend/myaccountleftmenu.xhtml"/>
+            </ui:define>
+            <ui:define name="maincontent">
+                <h1>#{msgs.clientFormTitle}</h1>
+                <h:form>
+                    <h:panelGrid columns="3">
+
+                        #{msgs.clientCompanyName}
+                        <h:inputText id="companyName" value="#{clientBean.companyName}" required="true" requiredMessage="#{msgs.requiredClientCompanyName}"/>
+                        <h:message for="companyName" styleClass="errorMessage" />
+
+                        #{msgs.clientTitle}
+                        <h:inputText id="title" value="#{clientBean.title}" required="true" requiredMessage="#{msgs.requiredClientTitle}"/>
+                        <h:message for="title" styleClass="errorMessage" />
+
+                        #{msgs.clientEmail}
+                        <h:inputText id="email" value="#{clientBean.email}" required="true" requiredMessage="#{msgs.requiredClientEmail}"/>
+                        <h:message for="email" styleClass="errorMessage" />
+
+                        
+                        #{msgs.clientLastName}
+                        <h:inputText id="lastName" value="#{clientBean.lastName}" required="true" requiredMessage="#{msgs.requiredClientLastName}"/>
+                        <h:message for="lastName" styleClass="errorMessage" />
+
+                        #{msgs.clientFirstName}
+                        <h:inputText id="firstName" value="#{clientBean.firstName}" required="true" requiredMessage="#{msgs.requiredClientFirstName}"/>
+                        <h:message for="firstName" styleClass="errorMessage" />
+
+                        #{msgs.clientAddress1}
+                        <h:inputText id="address1" value="#{clientBean.address1}" required="true" requiredMessage="#{msgs.requiredClientAddress1}"/>
+                        <h:message for="address1" styleClass="errorMessage" />
+
+                        #{msgs.clientAddress2}
+                        <h:inputText id="address2" value="#{clientBean.address2}"/>
+                        <h:message for="address2" styleClass="errorMessage" />
+
+                        #{msgs.clientCity}
+                        <h:inputText id="city" value="#{clientBean.city}" required="true" requiredMessage="#{msgs.requiredClientCity}"/>
+                        <h:message for="city" styleClass="errorMessage" />
+
+                        #{msgs.clientCountry}
+                        <h:inputText id="country" value="#{clientBean.country}" required="true" requiredMessage="#{msgs.requiredClientCountry}"/>
+                        <h:message for="country" styleClass="errorMessage" />
+
+                        #{msgs.clientPostalCode}
+                        <h:inputText id="postalCode" value="#{clientBean.postalCode}" required="true" requiredMessage="#{msgs.requiredClientPostalCode}"/>
+                        <h:message for="postalCode" styleClass="errorMessage" />
+
+                        #{msgs.clientHomePhone}
+                        <h:inputText id="homePhone" value="#{clientBean.homePhone}" required="true" requiredMessage="#{msgs.requiredClientHomePhone}"/>
+                        <h:message for="homePhone" styleClass="errorMessage" />
+
+                        #{msgs.clientCellPhone}
+                        <h:inputText id="cellPhone" value="#{clientBean.homePhone}" required="true" requiredMessage="#{msgs.requiredClientCellPhone}"/>
+                        <h:message for="cellPhone" styleClass="errorMessage" />
+
+                        #{msgs.clientUserName}
+                        <h:inputText id="username" value="#{clientBean.userName}" required="true" requiredMessage="#{msgs.requiredClientUserName}"/>
+                        <h:message for="username" styleClass="errorMessage" />
+
+                        #{msgs.passwordPrompt}
+                        <h:inputSecret id="password" value="#{clientBean.password}" required="true" requiredMessage="#{msgs.passwordRequired}"/>
+                        <h:message for="password" styleClass="errorMessage" />
+
+                    </h:panelGrid>
+
+                    <div class="adminbutton">
+                        <h:commandButton rendered ="#{!clientBean.isLoggedIn()}" value="#{msgs.clientRegisterButton}"  action="#{clientActionBean.insertRegistrationForm()}" />
+                        <h:commandButton rendered ="#{clientBean.isLoggedIn()}" value="#{msgs.clientRegistrationSave}"  action="#{clientActionBean.saveRegistrationForm()}" />
+
+                    </div>    
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

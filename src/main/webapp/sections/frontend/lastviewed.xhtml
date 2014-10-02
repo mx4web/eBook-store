@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition>
+        <ui:fragment rendered="#{eBookActionBean.lastViewedBooks != null}">
+            <h:form>
+                <div class="content_left_section">
+
+                    <h1>#{msgs.pageLastViewedBooks}</h1>
+                    <ui:repeat value="#{eBookActionBean.getLastViewedBooks()}" var="book">
+                        <div class="bestsellers">
+                            <h:link outcome="bookDetails" >
+                                <h:graphicImage library="images" name="books/#{book.image}_s.jpg" />
+                                <f:param name="bookID" value="#{book.bookID}" />
+                            </h:link>
+                        </div>
+                    </ui:repeat>
+
+                </div>
+            </h:form>
+        </ui:fragment>
+    </ui:composition>
+
+</html>

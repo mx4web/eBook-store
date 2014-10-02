@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <div class="product_box">
+                <div class="product_info">
+                    <h:form>
+                        <div class="image_panel">
+                            <h:link outcome="bookDetails" >
+                                <h:graphicImage library="images" name="books/#{book.image}_s.jpg" />
+                                <f:param name="bookID" value="#{book.bookID}" />
+                            </h:link>
+                        </div>
+                        <h2>
+                            <h:link value="#{book.title.length() gt 50 ? book.title.substring(0,50).concat('...'):book.title}" outcome="bookDetails" >
+                                <f:param name="bookID" value="#{book.bookID}" />
+                            </h:link>
+                        </h2>
+                        <ul>
+                            <li>By #{book.author}</li>
+                            <li>Publisher: #{book.publisher}, <h:outputText value="#{book.createdDate}"><f:convertDateTime type="date"/></h:outputText></li>
+                            <li>Pages: #{book.numberOfPages}</li>
+                            <li>ISBN: #{book.isbn}</li>
+                            <li>List Price: <h:outputText value="#{book.listPrice}" class="listprice"><f:convertNumber type="currency"/></h:outputText></li>
+                            <li>Price: <h:outputText value="#{book.wholesalePrice}"><f:convertNumber type="currency"/></h:outputText></li>
+                        </ul>
+                    </h:form>
+                </div>
+                <div class="action_button">
+                    <h:form>
+                        <h:commandLink value="add to cart">
+                            <f:setPropertyActionListener target="#{cartDetailBean.bookID}" value="#{book.bookID}"/>
+                            <f:setPropertyActionListener target="#{cartDetailBean.title}" value="#{book.title}"/>
+                            <f:setPropertyActionListener target="#{cartDetailBean.price}" value="#{book.wholesalePrice}"/>
+                            <f:ajax render=":menuCartForm:cartQty :menuCartPopup" listener="#{cartActionBean.addToCart()}" onevent="showShoppingCartPopUp"/>
+                        </h:commandLink>
+                    </h:form>
+                </div>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

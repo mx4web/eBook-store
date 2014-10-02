@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:viewParam name="bookID" value="#{bookBean.bookID}"/>
+        <f:event type="preRenderView" listener="#{preRenderViewBean.writeCookie()}" />
+    </f:metadata>
+
+    <ui:composition template="/templates/masterLayout.xhtml">
+
+        <ui:define name="windowTitle">
+            <!-- get book details by the url parameter bookID -->
+            #{eBookActionBean.getBookDetails()}
+
+            #{msgs.pageTitle} - #{bookBean.title}
+        </ui:define>
+
+        <ui:define name="maincontent">
+            <ui:fragment rendered="#{bookBean.bookID ==0}">
+                #{msgs.pageBookNotAvailable}
+            </ui:fragment>
+
+            <ui:fragment rendered="#{bookBean.bookID !=0}">
+                <div class="image_panel">
+                    <h:graphicImage library="images" name="books/#{bookBean.image}.jpg" />
+                </div>
+                <div class="bookdetails">
+                    <h2>#{bookBean.title}</h2>
+                    <ul>
+                        <li>By #{bookBean.author}</li>
+                        <li><h:outputText value="#{bookBean.createdDate}"><f:convertDateTime type="date"/></h:outputText></li>
+                        <li>Pages: #{bookBean.numberOfPages}</li>
+                        <li>ISBN #{bookBean.isbn}</li>
+                        <li>List Price: <h:outputText value="#{bookBean.listPrice}" class="listprice"><f:convertNumber type="currency"/></h:outputText></li>
+                        <li>Price: <h:outputText value="#{bookBean.wholesalePrice}"><f:convertNumber type="currency"/></h:outputText></li>
+                    </ul>
+                </div>
+                <div class="cleaner_with_height">&nbsp;</div>
+
+                <ui:fragment rendered="#{bookBean.status == 0}">
+                    #{msgs.pageBookNotAvailable}
+                </ui:fragment>
+
+                <ui:fragment rendered="#{bookBean.status == 1}">
+
+                    <div>
+                        #{bookBean.description}
+                    </div>
+                    <h:form class="book">
+                        <div class="action_button">
+
+                            <h:commandLink value="add to cart">
+                                <f:setPropertyActionListener target="#{cartDetailBean.bookID}" value="#{bookBean.bookID}"/>
+                                <f:setPropertyActionListener target="#{cartDetailBean.title}" value="#{bookBean.title}"/>
+                                <f:setPropertyActionListener target="#{cartDetailBean.price}" value="#{bookBean.wholesalePrice}"/>
+                                <f:ajax listener="#{cartActionBean.addToCart()}" render=":menuCartForm:cartQty :menuCartPopup" onevent="showShoppingCartPopUp"/>
+                            </h:commandLink>
+
+                        </div>
+                    </h:form>
+
+                    <div class="cleaner_with_height">&nbsp;</div>
+                    <hr/>
+
+                    <h2>Customer Reviews</h2>
+                    <h:outputText value="Be the first to review this book" rendered="#{reviewActionBean.getReviewsByBook(bookBean.bookID).size() == 0}"/>
+
+                    <ui:repeat value="#{reviewActionBean.getReviewsByBook(bookBean.bookID)}" var="review">
+                        <div class="reviews">
+                            #{review[0]} #{review[1]} • 
+                            <h:outputText value="#{review[2]}" class="date"><f:convertDateTime type="date" dateStyle="long"/></h:outputText>
+                            <br/>
+                            <div class="rateit" data-rateit-value="#{review[3]}" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+                            <br/>
+                            <h:outputText value="#{review[4]}" />
+                        </div>
+                    </ui:repeat>
+                    <br/>
+
+                    <h:form>
+                        <h:commandLink rendered ="#{!clientBean.isLoggedIn()}" value="login to review" action="login">
+                            <f:setPropertyActionListener target="#{clientBean.referencePage}" value="bookDetails.xhtml?bookID=#{bookBean.bookID}"/>
+                        </h:commandLink>
+                    </h:form>
+
+                    <h:form rendered ="#{clientBean.isLoggedIn()}" id="reviewform">
+                        <div id="reviewmessage">Thanks for your submit, your review will be verified soon.</div>
+                        <div class="newreview" id="newreview">
+                            Review the book<br/>
+                            <input type="range" min="0" max="5" value="0" step="1" id="backing2"/>
+                            <div class="rateit" id="newrate" data-rateit-backingfld="#backing2"/>        
+
+                            <h:inputHidden value="#{reviewBean.rating}" id="newrating"/>
+                            <h:inputTextarea value="#{reviewBean.reviewText}" id="newreviewtext" cols="80" rows="6"></h:inputTextarea>
+
+                            <div class="action_button">
+                                <h:commandLink value="submit">
+                                    <f:ajax execute="newrating newreviewtext" listener="#{reviewActionBean.reviewBook()}" onevent="showReviewMessage"/>
+                                </h:commandLink>
+                            </div>
+                        </div>
+
+                        <script>
+                            $("#newrate").click(function() {
+                                $("#newreview [id*='newrating']").val($("#newrate").rateit("value"));
+                            });
+                        </script>
+                    </h:form>
+
+                </ui:fragment>
+
+            </ui:fragment>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

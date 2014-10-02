@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:viewParam name="buttonAction" value="#{adminPageBean.buttonAction}"/>
+    </f:metadata>
+
+    <body>
+        <ui:composition template="/templates/masterLayout.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.adminProductFormTitle}
+            </ui:define>
+
+            <ui:define name="content_left">
+                <ui:include src="/sections/frontend/myaccountleftmenu.xhtml"/>
+            </ui:define>
+            <ui:define name="maincontent">
+                <h1>#{msgs.adminProductFormTitle}</h1>
+                <h:form>
+                    <h:panelGrid columns="3">
+
+                        #{msgs.adminISBN}
+                        <h:inputText id="isbn" value="#{inventoryBean.isbn}" required="true" requiredMessage="#{msgs.adminRequiredISBN}"/>
+                        <h:message for="isbn" styleClass="errorMessage" />
+
+                        #{msgs.adminBookTitle}
+                        <h:inputText id="title" value="#{inventoryBean.title}" required="true" requiredMessage="#{msgs.adminRequiredBookTitle}" size="80"/>
+                        <h:message for="title" styleClass="errorMessage" />
+
+                        #{msgs.adminDescription}
+                        <h:inputTextarea id="description" value="#{inventoryBean.description}" required="true" requiredMessage="#{msgs.adminRequiredDescription}" cols="80" rows="8" />
+                        <h:message for="description" styleClass="errorMessage" />
+
+                        #{msgs.adminAuthor}
+                        <h:inputText id="author" value="#{inventoryBean.author}" required="true" requiredMessage="#{msgs.adminRequiredAuthor}"/>
+                        <h:message for="author" styleClass="errorMessage" />
+
+                        #{msgs.adminPublisher}
+                        <h:inputText id="publisher" value="#{inventoryBean.publisher}" required="true" requiredMessage="#{msgs.adminRequiredPublisher}"/>
+                        <h:message for="publisher" styleClass="errorMessage" />
+
+                        #{msgs.adminNumberOfPages}
+                        <h:inputText id="numberOfPages" value="#{inventoryBean.numberOfPages}"  required="true" requiredMessage="#{msgs.adminRequiredNumberOfPages}"/>
+                        <h:message for="numberOfPages" styleClass="errorMessage" />
+
+                        #{msgs.adminImage}
+                        <h:inputText id="image" value="#{inventoryBean.image}" required="true" requiredMessage="#{msgs.adminRequiredImage}"/>
+                        <h:message for="image" styleClass="errorMessage" />
+
+                        #{msgs.adminWholesalePrice}
+                        <h:inputText id="wholesalePrice" value="#{inventoryBean.wholesalePrice}" required="true" requiredMessage="#{msgs.adminWholesalePrice}"/>
+                        <h:message for="wholesalePrice" styleClass="errorMessage" />
+
+                        #{msgs.adminListPrice}
+                        <h:inputText id="listPrice" value="#{inventoryBean.listPrice}" required="true" requiredMessage="#{msgs.adminRequiredListPrice}"/>
+                        <h:message for="listPrice" styleClass="errorMessage" />
+
+                        #{msgs.adminStatus}
+                        <h:inputText id="status" value="#{inventoryBean.status}" required="true" requiredMessage="#{msgs.adminRequiredStatus}"/>
+                        <h:message for="status" styleClass="errorMessage" />
+
+
+                        #{msgs.adminSoldQty}
+                        <h:inputText id="soldQty" value="#{inventoryBean.soldQty}" required="true" requiredMessage="#{msgs.adminRequiredSoldQty}"/>
+                        <h:message for="soldQty" styleClass="errorMessage" />
+
+                        #{msgs.adminGenre}
+                        <h:selectOneMenu value="#{searchReviewBean.genre}">
+                            <f:selectItems value="#{eBookActionBean.genre}" var="genre" itemLabel="#{genre.name}" itemValue="#{genre.genreID}" />
+                        </h:selectOneMenu>
+
+
+
+                    </h:panelGrid>
+
+                    <div class="adminbutton">
+                        <h:commandButton rendered="#{adminPageBean.buttonAction==0}" value="#{msgs.adminInventorySaveButton}"  action="#{inventoryActionBean.insertInventoryForm()}" />
+                        <h:commandButton rendered="#{adminPageBean.buttonAction==1}" value="#{msgs.adminInventoryUpdateButton}"  action="#{inventoryActionBean.updateInventoryForm()}" />
+                    </div>    
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

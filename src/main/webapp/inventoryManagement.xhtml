@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:event listener="#{siteActionBean.isLoggedInAsAdmin}" type="preRenderView" />
+    </f:metadata>
+
+    <body>
+        <ui:composition template="/templates/masterLayout.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.pageTitle} - #{msgs.adminInventoryManagement}
+            </ui:define>
+
+            <ui:define name="content_left">
+                <ui:include src="/sections/frontend/myaccountleftmenu.xhtml"/>
+            </ui:define>
+            <ui:define name="maincontent">
+                <h1>#{msgs.adminInventoryManagement}</h1>
+                <h:form>
+                    <div class="action_button">
+                        <h:link  value="#{msgs.adminCreateProduct}"  outcome="productForm">
+                            <f:param name="buttonAction" value="0" />
+                        </h:link>    
+                    </div>
+                </h:form>
+                <h:dataTable value="#{inventoryActionBean.getInventory()}" var="i"
+                             styleClass="order-table"
+                             headerClass="order-table-header"
+                             rowClasses="order-table-odd-row,order-table-even-row"
+                             >
+                    <h:column>
+                        <h:form>
+                            <h:commandLink action="#{inventoryActionBean.getInventoryByID(i[0])}" >
+                                <h:graphicImage library="images" name="updateIcon.png" alt="Update" />
+                            </h:commandLink>
+                        </h:form> 
+                    </h:column>
+                    <h:column>
+                        <h:form>
+                            <h:commandLink action="#{inventoryActionBean.deleteInventory(i[0])}" onclick="if (confirm('#{msgs.confirmDeleteBook}')) return true; else return false;">
+                                <h:graphicImage library="images" name="editIcon.png"  alt="Delete"/>
+                            </h:commandLink>
+                        </h:form> 
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">ISBN </f:facet>
+                        <h:outputText value="#{i[3]}" /> 
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Title</f:facet>
+                        <h:outputText value="#{i[1]}" /> 
+                    </h:column>
+
+
+                    <h:column>
+                        <f:facet name="header">Genre</f:facet>
+                        <h:outputText value="#{i[2]}" /> 
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">List Price</f:facet>
+                        <h:outputText value="#{i[4]}" /> 
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Publisher</f:facet>
+                        <h:outputText value="#{i[5]}" /> 
+                    </h:column>
+
+                </h:dataTable>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

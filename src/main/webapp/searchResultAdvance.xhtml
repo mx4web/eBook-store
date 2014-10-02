@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ebook="http://ebook.com/facelets">
+
+    <ui:composition template="/templates/masterLayout.xhtml">
+        <ui:define name="windowTitle">
+            #{msgs.pageTitle} - #{msgs.pageSearchResult}
+        </ui:define>
+
+        <ui:define name="maincontent">
+            <h1>#{msgs.searchBookAdvance}</h1>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{msgs.searchBookTitle}"></h:outputText>
+                    <h:inputText value="#{searchBean.title}"></h:inputText>
+                    <h:outputText value="#{msgs.searchBookAuthor}"></h:outputText>
+                    <h:inputText value="#{searchBean.author}"></h:inputText>
+                    <h:outputText value="#{msgs.searchBookISBN}"></h:outputText>
+                    <h:inputText value="#{searchBean.ISBN}"></h:inputText>
+                </h:panelGrid>
+                <h:commandButton value="#{msgs.searchBook}" action="searchResultAdvance"></h:commandButton>
+            </h:form>
+            <div class="cleaner_with_height">&nbsp;</div>
+            <h2>#{msgs.pageSearchResult}</h2>
+            <h:outputText rendered="#{eBookActionBean.searchBooksAdvance().size() == 0}">#{msgs.searchNoResult}</h:outputText>
+            <ui:repeat value="#{eBookActionBean.searchBooksAdvance()}" var="book">
+                <ebook:book book="#{book}"></ebook:book>
+                <div class="cleaner_with_height">&nbsp;</div>
+            </ui:repeat>
+
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

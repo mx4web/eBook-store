@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:event listener="#{siteActionBean.isLoggedIn}" type="preRenderView" />
+    </f:metadata>
+
+    <body>
+        <ui:composition template="/templates/masterLayout.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.ebookTitle}
+            </ui:define>
+
+            <ui:define name="content_left">
+                <ui:include src="/sections/frontend/myaccountleftmenu.xhtml"/>
+            </ui:define>
+
+            <ui:define name="maincontent">
+                <h1>#{msgs.ebookTitle}</h1>
+                <h:outputText value="#{msgs.ebookNO}" rendered="#{invoiceActionBean.getEBooksByClient().size() == 0}"/>
+                <h:dataTable value="#{invoiceActionBean.getEBooksByClient()}" var="book"
+                             styleClass="order-table"
+                             headerClass="order-table-header"
+                             rendered="#{invoiceActionBean.getEBooksByClient().size() > 0}"
+                             >
+                    <h:column>
+                        <f:facet name="header">Book Title</f:facet>
+                        <h:outputLink  value="javax.faces.resource/AliceinWonderland.pdf?ln=ebooks" target="_blank">#{book}</h:outputLink>
+                    </h:column>
+                </h:dataTable>
+
+                <ui:fragment rendered="#{invoiceActionBean.getEBooksByClient().size() > 0}">
+                    <p/><p/>
+                    <p>#{msgs.ebookDownload}</p>
+                </ui:fragment>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

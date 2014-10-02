@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <f:metadata>
+        <f:event listener="#{siteActionBean.canCheckout}" type="preRenderView" />
+    </f:metadata>
+    
+    <ui:composition template="/templates/masterLayout.xhtml">
+
+        <ui:define name="windowTitle">
+            #{msgs.pageTitle} - #{msgs.cartCheckout}
+        </ui:define>
+
+        <ui:define name="maincontent">
+            <h1>#{msgs.cartCheckout}</h1>
+
+            <h:form>
+                <div class="checkout">
+                    <h:panelGrid columns="3">
+                        #{msgs.checkoutName}
+                        <h:inputText id="name" label="#{msgs.checkoutName}" value="#{payment.name}" required="true" requiredMessage="#{msgs.checkoutNameRequired}"/>
+                        <h:message for="name" styleClass="errorMessage" />
+
+                        #{msgs.checkoutCreditCard}
+                        <h:inputText id="card" label="#{msgs.checkoutCreditCard}" value="#{payment.card}" required="true" requiredMessage="#{msgs.checkoutCardRequired}">
+                            <f:converter converterId="com.kenfogel.CreditCardConverter" />
+                            <f:validator validatorId="com.kenfogel.CreditCardValidator" />
+                        </h:inputText>
+                        <h:message for="card" styleClass="errorMessage" />
+
+                        #{msgs.checkoutExpirationDate}
+                        <h:inputText id="date" label="#{msgs.checkoutExpirationDate}"
+                                     value="#{payment.date}">
+                            <f:convertDateTime pattern="MM/yyyy" />
+                        </h:inputText>
+                        <h:message for="date" styleClass="errorMessage" />
+                    </h:panelGrid>
+                    <div class="action_button">
+                        <h:commandLink value="#{msgs.checkoutProcess}" action="#{cartActionBean.submitCart()}"/>
+                    </div>
+                </div>
+            </h:form>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

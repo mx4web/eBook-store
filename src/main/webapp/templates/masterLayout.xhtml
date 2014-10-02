@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      lang="#{siteActionBean.language}">
+
+    <f:view locale="#{siteActionBean.locale}"/>
+    
+    <h:head>
+        <title><ui:insert name="windowTitle" /></title>
+        <h:outputScript library="js" name="jquery.min.js" />
+        <h:outputScript library="js" name="jquery.rateit.min.js" />
+        <h:outputScript library="js" name="jquery-ui-1.10.4.custom.min.js" />
+        <h:outputScript library="js" name="ebook.js" />
+        <h:outputStylesheet library="js" name="rateit.css" />
+        <h:outputStylesheet library="css" name="styles.css" />
+        <h:outputStylesheet library="css" name="jquery-ui-1.10.4.custom.css" />
+    </h:head>
+
+    <h:body>
+
+        <ui:debug hotkey="x" rendered="#{initParam['javax.faces.PROJECT_STAGE'] eq 'Development'}" />
+        <div id="container">
+            <div id="menu">
+                <ui:insert name="menu">
+                    <ui:include src="/sections/frontend/menu.xhtml" />
+                </ui:insert>
+            </div>
+            <ui:fragment rendered="#{!clientBean.isLoggedIn() || clientBean.privilegeID == 1}">
+                <ui:insert name="header">
+                    <ui:include src="/sections/frontend/header.xhtml"/>
+                </ui:insert>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{clientBean.isLoggedInAsAdmin()}">
+                <ui:insert name="header_admin">
+                    <ui:include src="/sections/frontend/header_admin.xhtml"/>
+                </ui:insert>
+            </ui:fragment>
+
+            <div id="content">
+                <ui:insert name="content">
+                    <div id="content_left">
+                        <ui:insert name="content_left">
+                            <ui:insert name="search">
+                                <ui:include src="/sections/frontend/search.xhtml"/>
+                            </ui:insert>
+                            <ui:insert name="genre">
+                                <ui:include src="/sections/frontend/genre.xhtml"/>
+                            </ui:insert>
+                            <ui:insert name="lastviewed">
+                                <ui:include src="/sections/frontend/lastviewed.xhtml"/>
+                            </ui:insert>
+                            <ui:insert name="bestseller">
+                                <ui:include src="/sections/frontend/bestseller.xhtml"/>
+                            </ui:insert>
+                        </ui:insert>
+                    </div>
+                    <div id="content_right">
+                        <ui:insert name="maincontent">
+                            <ui:include src="/sections/frontend/mainContent.xhtml"/>
+                        </ui:insert>
+                    </div>
+                    <div class="cleaner_with_height">&nbsp;</div>
+                </ui:insert>
+            </div>
+            <div id="footer"> 
+                <ui:insert name="footer">
+                    <ui:include src="/sections/frontend/footer.xhtml" />
+                </ui:insert>
+            </div>
+        </div>
+        <ui:debug />
+    </h:body>
+</html>

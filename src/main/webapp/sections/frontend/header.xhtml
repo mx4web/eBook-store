@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition>
+        <div id="header">
+            <div id="homelink">
+                <h:form rendered="#{!clientBean.loggedInAsAdmin}" class="home">
+                    <h:commandLink action="index?faces-redirect=true" class="home">
+                        <f:setPropertyActionListener target="#{genreBean.genreID}" value="0"/>
+                        <f:setPropertyActionListener target="#{genreBean.name}" value=""/>
+                    </h:commandLink>
+                </h:form>
+            </div>
+            <div id="special_offers">
+                <p> #{msgs.pageHeaderSpecial} </p>
+            </div>
+            <div id="new_books">
+                <ul>
+                    <ui:repeat value="#{eBookActionBean.recentBooks}" var="book" size="#{eBookActionBean.recentBooks.size() > 3? 3:eBookActionBean.recentBooks.size()}">
+                        <li>
+                            <h:form>
+                                <h:link value="#{book.title.length() gt 27 ? book.title.substring(0,27).concat('...'):book.title}" outcome="bookDetails" >
+                                    <f:param name="bookID" value="#{book.bookID}" />
+                                </h:link>
+                            </h:form>
+                        </li>
+                    </ui:repeat>
+                </ul>
+                <h:form>
+                    <h:commandLink value="#{msgs.pageHeaderNewBooks}" action="recentBooks?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{genreBean.genreID}" value="0"/>
+                    </h:commandLink>
+                </h:form>
+            </div>
+        </div>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:event listener="#{siteActionBean.isLoggedInAsAdmin}" type="preRenderView" />
+        <f:viewParam name="reportID" value="#{reportBean.reportID}"/>
+    </f:metadata>
+
+    <ui:composition template="/templates/masterLayout.xhtml">
+        <ui:define name="windowTitle">
+            <h:outputText rendered="#{reportBean.reportID==1}" value="#{msgs.reportSubmitButtonTopSales}" />
+            <h:outputText rendered="#{reportBean.reportID==2}" value="#{msgs.reportSubmitButtonTopSeller}"/>
+            <h:outputText rendered="#{reportBean.reportID==3}" value="#{msgs.reportSubmitButtonTopClient}"/>
+            <h:outputText rendered="#{reportBean.reportID==4}" value="#{msgs.adminOrderManagement}"/>
+        </ui:define>
+
+        <ui:define name="content_left">
+            <ui:include src="/sections/frontend/myaccountleftmenu.xhtml"/>
+        </ui:define>
+        <ui:define name="maincontent">
+            <h1>
+                <h:outputText rendered="#{reportBean.reportID==1}" value="#{msgs.reportSubmitButtonTopSales}" />
+                <h:outputText rendered="#{reportBean.reportID==2}" value="#{msgs.reportSubmitButtonTopSeller}"/>
+                <h:outputText rendered="#{reportBean.reportID==3}" value="#{msgs.reportSubmitButtonTopClient}"/>
+                <h:outputText rendered="#{reportBean.reportID==4}" value="#{msgs.adminOrderManagement}"/>
+            </h1>
+
+            <script>
+                $(function() {
+                    $(".reportform [id*='startDate']").datepicker({dateFormat: "d-M-yy"});
+                    $(".reportform [id*='endDate']").datepicker({dateFormat: "d-M-yy"});
+                });
+            </script>
+
+            <div class="reportform">
+                <h:form>
+                    <h:panelGrid id="grid" columns="3" cellpadding="5"   style="border:none;margin:0 auto;width:600px;"   >  
+
+                        #{msgs.reportStartDate}
+                        <h:inputText id="startDate" value="#{reportBean.startDate}" required="true" requiredMessage="#{msgs.requiredStartDate}" >
+                            <f:convertDateTime type="date" pattern="d-MMM-yyyy" timeZone="EST"/>
+                        </h:inputText>
+                        <h:message for="startDate" styleClass="errorMessage" />
+
+                        #{msgs.reportEndDate}
+                        <h:inputText id="endDate" value="#{reportBean.endDate}" required="true" requiredMessage="#{msgs.requiredEndDate}" >
+                            <f:convertDateTime type="date" pattern="d-MMM-yyyy" timeZone="EST" />
+                        </h:inputText>
+                        <h:message for="endDate" styleClass="errorMessage" />
+
+                    </h:panelGrid>
+
+                    <div class="action_button">
+                        <h:commandLink rendered="#{reportBean.reportID==1}" value="#{msgs.reportSubmitButtonTopSales}" action="#{reportActionBean.getSales()}"/>
+                        <h:commandLink rendered="#{reportBean.reportID==2}" value="#{msgs.reportSubmitButtonTopSeller}" action="#{reportActionBean.getTopSeller()}"/>
+                        <h:commandLink rendered="#{reportBean.reportID==3}" value="#{msgs.reportSubmitButtonTopClient}" action="#{reportActionBean.getTopClients()}"/>
+                        <h:commandLink rendered="#{reportBean.reportID==4}" value="Search" action="orderManagement"/>
+                    </div>
+
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+
+</html>

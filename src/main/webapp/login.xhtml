@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>#{msgs.headTitle}</title>
+    </head>
+    <body>
+        <ui:composition template="/templates/masterLayout.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.headTitle}
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="loginform">
+                    <h:form>
+                        <h:panelGrid columns="3">
+                            #{msgs.namePrompt}
+                            <h:inputText id="name" value="#{clientBean.userName}" required="true" requiredMessage="#{msgs.userNameRequired}"/> <h:message for="name" styleClass="errorMessage" />
+
+                            #{msgs.passwordPrompt}
+                            <h:inputSecret id="password" value="#{clientBean.password}" required="true" requiredMessage="#{msgs.passwordRequired}"/><h:message for="password" styleClass="errorMessage" />
+
+                        </h:panelGrid>
+
+                        <div class="action_button">
+                            <h:commandLink value="#{msgs.loginButtonText}" action="#{clientActionBean.getClientByUserNamePW()}"/>
+                            <p class="errorMessage">#{clientBean.invalidLogin}</p>
+                        </div>
+
+                        <div class="linkText">
+                            <h:link value="#{msgs.createAccount}" outcome="registrationForm" class="current" />
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

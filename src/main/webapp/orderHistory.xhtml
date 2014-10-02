@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:event listener="#{siteActionBean.isLoggedIn}" type="preRenderView" />
+    </f:metadata>
+
+    <body>
+        <ui:composition template="/templates/masterLayout.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.orderHistoryTitle}
+            </ui:define>
+
+            <ui:define name="content_left">
+                <ui:include src="/sections/frontend/myaccountleftmenu.xhtml"/>
+            </ui:define>
+            <ui:define name="maincontent">
+                <h1>#{msgs.orderHistoryTitle}</h1>
+                <h:outputText value="#{msgs.orderHistoryNoOrder}" rendered="#{invoiceActionBean.getOrdersByClient().size() == 0}"/>
+                <h:dataTable value="#{invoiceActionBean.getOrdersByClient()}" var="invoice"
+                             styleClass="order-table"
+                             headerClass="order-table-header"
+                             rendered="#{invoiceActionBean.getOrdersByClient().size() > 0}"
+                             >
+
+                    <h:column>
+                        <!-- column header -->
+                        <f:facet name="header">Invoice ID</f:facet>
+                        <!-- row record -->
+                        <h:form>
+
+                            <h:link value="#{invoice.invoiceID}" outcome="invoiceDetails" >
+                                <f:param name="invoiceID" value="#{invoice.invoiceID}" />
+                            </h:link>
+
+                        </h:form>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Invoice Date</f:facet>
+                        <h:outputText value="#{invoice.invoiceDate}"><f:convertDateTime type="both"/></h:outputText> 
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Invoice Total</f:facet>
+                        <h:outputText value="#{invoice.invoiceTotal}"><f:convertNumber type="currency"/></h:outputText> 
+                    </h:column>
+
+                </h:dataTable>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

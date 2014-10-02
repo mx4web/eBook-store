@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:metadata>
+        <f:event listener="#{siteActionBean.isLoggedIn}" type="preRenderView" />
+        <f:viewParam name="invoiceID" value="#{invoiceBean.invoiceID}"/>
+    </f:metadata>
+    
+    <body>
+        <ui:composition template="/templates/masterLayout.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.orderHistoryTitle}
+            </ui:define>
+            <ui:define name="content_left">
+                <ui:include src="/sections/frontend/myaccountleftmenu.xhtml"/>
+            </ui:define>
+            <ui:define name="maincontent">
+                <ui:include src="/sections/frontend/invoice.xhtml"/>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

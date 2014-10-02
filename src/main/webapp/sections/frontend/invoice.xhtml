@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition>
+        <h1>#{msgs.orderDetailsTitle}</h1>
+        <div class="billinginfo">
+            <b>#{msgs.OrderHistoryBilling}</b>
+            <h:panelGrid columns="2">
+                #{msgs.orderHistoryInvoiceID}:
+                <h:outputText value="#{invoiceBean.invoiceID}" />
+
+                #{msgs.OrderHistoryBillingName}:
+                <h:outputText value="#{clientBean.firstName}  #{clientBean.lastName}" />
+
+                #{msgs.OrderHistoryBillingAddress}:
+                <h:outputText value="#{clientBean.address1}  #{clientBean.address2}, #{clientBean.city}  #{clientBean.province}, #{clientBean.postalCode}" />
+            </h:panelGrid>
+        </div>
+        <h:dataTable value="#{invoiceActionBean.getOrdersDetailsByID(invoiceBean.invoiceID)}" var="i" styleClass="orderdetails" headerClass="header">
+            <h:column>
+                <!-- column header -->
+                <f:facet name="header">Book Title</f:facet>
+                <!-- row record -->
+                <h:outputText value="#{i[3]}" /> 
+            </h:column>
+
+            <h:column>
+                <!-- column header -->
+                <f:facet name="header">Price</f:facet>
+                <!-- row record -->
+                <h:outputText value="#{i[1]}"><f:convertNumber type="currency"/></h:outputText> 
+            </h:column>
+        </h:dataTable>
+        <div>
+            <ui:repeat value="#{invoiceActionBean.getOrdersByID(invoiceBean.invoiceID)}" var="f"> 
+                <h:panelGrid columns="2" class="ordersummary" >
+                    #{msgs.cartDiscount}
+                    <h:outputText value="#{f[1]}"><f:convertNumber type="currency"/></h:outputText>
+
+                    <h:outputText value="#{msgs.cartSubtotal}"/>
+                    <h:outputText value="#{f[2]}"><f:convertNumber type="currency"/></h:outputText>
+
+                    <h:outputText value="#{msgs.cartGst}"/>
+                    <h:outputText value="#{f[0]}"><f:convertNumber type="currency"/></h:outputText>
+
+                    <h:outputText value="#{msgs.cartTotal}" class="total"/> 
+                    <h:outputText value="#{f[3]}" class="total"><f:convertNumber type="currency"/></h:outputText>
+                </h:panelGrid>
+            </ui:repeat>
+        </div>
+
+        <div class="action_button">
+            <h:form>
+                <h:commandLink type="submit" value="Print" onclick="printpage()" />
+            </h:form>
+        </div>
+    </ui:composition>
+
+</html>

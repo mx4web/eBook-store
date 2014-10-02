@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:insert name="content">
+        <ui:fragment rendered ="#{clientBean.isLoggedIn()}">
+            <p><h:link  value="My Profile" outcome="registrationForm"/></p>
+            <p><h:link rendered ="#{!clientBean.isLoggedInAsAdmin()}" value="Order History" outcome="orderHistory" /></p>
+            <p><h:link rendered ="#{!clientBean.isLoggedInAsAdmin()}" value="Download my ebooks" outcome="ebookDownLoad" /></p>
+        </ui:fragment>
+
+        <ui:fragment rendered ="#{clientBean.isLoggedInAsAdmin()}">
+            <p><h:link value="Order Management" outcome="reportHeader" class="current">
+                    <f:param name="reportID" value="4" />
+                </h:link>
+            </p>
+            <p><h:link value="Inventory Management" outcome="inventoryManagement" /></p>
+            <p><h:link value="Review Management" outcome="reviewManagement" /></p>
+            <p><h:outputText value="Reporting"/></p>
+            <ul>
+                <li>
+                    <h:link value="Top Sales" outcome="reportHeader" >
+                        <f:param name="reportID" value="1" />
+                    </h:link>
+                </li>
+                <li>
+                    <h:link value="Top Seller" outcome="reportHeader" >
+                        <f:param name="reportID" value="2" />
+                    </h:link>
+                </li>
+                <li>
+                    <h:link value="Top Clients" outcome="reportHeader" class="current">
+                        <f:param name="reportID" value="3" />
+                    </h:link> 
+                </li>
+            </ul>
+        </ui:fragment>
+        <h1>                
+            <h:link rendered ="#{!clientBean.isLoggedIn()}" value="Login" outcome="login" />
+
+            <h:form>
+                <h:commandLink rendered ="#{clientBean.isLoggedIn()}" value="Logout" action="#{clientBean.logout()}"/>
+            </h:form>
+        </h1>
+    </ui:insert>
+
+</html>
